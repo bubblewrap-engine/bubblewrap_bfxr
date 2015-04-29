@@ -4,7 +4,7 @@
 #define BUBBLEWRAP_BASE_BGFXPHYSFSINPUTSTREAM_HPP
 
 #include <iostream>
-#include "physfs.h"
+#include <physfs/physfs.h>
 namespace Bubblewrap
 {
 	namespace Base
