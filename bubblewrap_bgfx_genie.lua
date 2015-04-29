@@ -1,3 +1,5 @@
+dofile( "bgfx_genie.lua" )
+
 PsyProjectEngineLib( "bgfx" )
 	files 
 	{ 
@@ -9,6 +11,9 @@ PsyProjectEngineLib( "bgfx" )
 		"./include", 
 		"../bubblewrap/External",
 		"../bubblewrap/include/",
+		"./bgfx/include/",
+		"./bx/include/",
+		
 		}
 	PsyAddEngineLinks {
 		"base"

@@ -35,6 +35,7 @@ namespace Bubblewrap
 		private:
 
 			// sf::RenderWindow* sfWindow_;
+			int View_;
 		};
 
 	}

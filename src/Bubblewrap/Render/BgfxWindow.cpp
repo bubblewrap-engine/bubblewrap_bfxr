@@ -5,6 +5,7 @@
 #include "Bubblewrap/Events/EventManager.hpp"
 // #include "Bgfx/Graphics.hpp"
 #include "Bubblewrap/Events/BgfxKeyTranslator.hpp"
+#include "bgfx.h"
 namespace Bubblewrap
 {
 	namespace Render
@@ -13,6 +14,9 @@ namespace Bubblewrap
 			: Window( Settings )
 		{
 			// Window_ = sfWindow_ = new sf::RenderWindow( sf::VideoMode( Settings.Width_, Settings.Height_ ), Settings.Title_ );
+			bgfx::init( );
+			bgfx::reset( Settings.Width_, Settings.Height_, BGFX_RESET_VSYNC );
+			View_ = 0;
 		}
 
 		Window* BgfxWindow::Create( void* Params )
