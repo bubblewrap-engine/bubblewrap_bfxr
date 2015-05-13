@@ -5,6 +5,7 @@
 #include "Bubblewrap/Math/Vector2.hpp"
 #include "Bubblewrap/Base/Entity.hpp"
 #include "Bubblewrap/Render/BgfxTexture.hpp"
+
 namespace Bubblewrap
 {
 	namespace Render
@@ -68,11 +69,11 @@ namespace Bubblewrap
 
 		void BgfxVertices::Refresh()
 		{ 
-			/* SFVertices_.clear();
-			SFVertices_.resize( VertexCount_ );
+			InternalVertices_.clear();
+			InternalVertices_.resize( VertexCount_ );
 			float wid = 0;
 			float hei = 0;
-			if ( Texture_ != nullptr )
+			/*if ( Texture_ != nullptr )
 			{
 				if ( SFTexture_ == nullptr )
 				{
@@ -84,13 +85,14 @@ namespace Bubblewrap
 					wid = ( float )SFTexture_->GetTexture()->getSize().x;
 					hei = ( float ) SFTexture_->GetTexture()->getSize().y;
 				}
-			}
+			}/**/
 			for ( unsigned int Idx = 0; Idx < VertexCount_; ++Idx )
 			{
-				SFVertices_[ Idx ].color = sf::Color( Vertices_[ Idx ].Colour_.R(), Vertices_[ Idx ].Colour_.G(), Vertices_[ Idx ].Colour_.B(), Vertices_[ Idx ].Colour_.A() );
-				SFVertices_[ Idx ].position = sf::Vector2f( Vertices_[ Idx ].Position_.X(), Vertices_[ Idx ].Position_.Y() );
-
-				SFVertices_[ Idx ].texCoords = sf::Vector2f( Vertices_[ Idx ].TexCoords_.X() * wid, Vertices_[ Idx ].TexCoords_.Y() * hei );
+				InternalVertices_[ Idx ].m_abgr = Vertices_[ Idx ].Colour_.ABGR();
+				InternalVertices_[ Idx ].m_x = Vertices_[ Idx ].Position_.X();
+				InternalVertices_[ Idx ].m_y = Vertices_[ Idx ].Position_.Y();
+				InternalVertices_[ Idx ].m_z = Vertices_[ Idx ].Position_.Z();
+				//InternalVertices_[ Idx ].texCoords = sf::Vector2f( Vertices_[ Idx ].TexCoords_.X() * wid, Vertices_[ Idx ].TexCoords_.Y() * hei );
 			}/**/ 
 			Dirty_ = false;
 		}

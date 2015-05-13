@@ -11,6 +11,8 @@ namespace Bubblewrap
 			: public Clock
 		{
 		public:
+			BgfxClock();
+
 			CREATE_REGISTER_OVERRIDE( BgfxClock, Clock );
 
 		public:
@@ -18,6 +20,7 @@ namespace Bubblewrap
 			void Update( float dt );
 
 		private:
+			long long LastTime;
 		};
 	}
 }

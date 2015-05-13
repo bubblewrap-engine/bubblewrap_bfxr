@@ -13,7 +13,7 @@ PsyProjectEngineLib( "bgfx" )
 		"../bubblewrap/include/",
 		"./bgfx/include/",
 		"./bx/include/",
-		
+		"../bubblewrap_sdl/sdl2/SDL2/include"
 		}
 	PsyAddEngineLinks {
 		"base"

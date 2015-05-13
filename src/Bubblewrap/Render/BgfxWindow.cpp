@@ -5,40 +5,78 @@
 #include "Bubblewrap/Events/EventManager.hpp"
 // #include "Bgfx/Graphics.hpp"
 #include "Bubblewrap/Events/BgfxKeyTranslator.hpp"
+#ifdef BUBBLEWRAP_SDL
+	#include <SDL.h>
+	#include <SDL_syswm.h>
+#endif
+#include <bgfxplatform.h> 
 #include "bgfx.h"
+#include <bx/bx.h>
+
 namespace Bubblewrap
 {
 	namespace Render
 	{
-		BgfxWindow::BgfxWindow( Window::WindowSettings Settings )
+		BgfxWindow::BgfxWindow( Window::WindowSettings Settings, Managers::Managers* Owner )
 			: Window( Settings )
 		{
 			// Window_ = sfWindow_ = new sf::RenderWindow( sf::VideoMode( Settings.Width_, Settings.Height_ ), Settings.Title_ );
-			bgfx::init( );
+			InternalWindow_ = nullptr;
+			InternalWindow_ = Owner->GetWindowManager().CreateOver( Settings.Name_, &Settings );
+			InternalWindow_->SetManager( Owner );
+#ifdef BUBBLEWRAP_SDL
+			if ( InternalWindow_->GetInternalPointer() != nullptr )
+				bgfx::sdlSetWindow( (SDL_Window* ) InternalWindow_->GetInternalPointer() );
+#endif
+			bgfx::init();
 			bgfx::reset( Settings.Width_, Settings.Height_, BGFX_RESET_VSYNC );
-			View_ = 0;
+
+			// Enable debug text.
+			bgfx::setDebug( BGFX_DEBUG_TEXT );
+
+			// Set view 0 clear state.
+			bgfx::setViewClear( 0
+				, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH
+				, Settings.Colour_.RGBA()
+				, 1.0f
+				, 0
+				);
+
 		}
 
-		Window* BgfxWindow::Create( void* Params )
+		Window* BgfxWindow::Create( void* Params, Managers::Managers* Owner )
 		{
 			Window::WindowSettings* Settings = ( Window::WindowSettings* )Params;
-			return ( Window* ) ( new BgfxWindow( *Settings ) );
+			return ( Window* ) ( new BgfxWindow( *Settings, Owner ) );
 		}
 	
 
 		void BgfxWindow::Update( float dt )
 		{
-			// sfWindow_->clear(sf::Color( ClearColour_.R(), ClearColour_.G(), ClearColour_.B() ));
+			// InternalWindow_->Update( dt );
+			
+			bgfx::setViewRect( 0, 0, 0, Settings_.Width_, Settings_.Height_ );
+			// This dummy draw call is here to make sure that view 0 is cleared
+			// if no other draw calls are submitted to view 0.
+			bgfx::submit( 0 );
+
+			bgfx::dbgTextClear();
+			bgfx::dbgTextPrintf( 0, 1, 0x4f, "Bgfx Window" );
+			bgfx::dbgTextPrintf( 0, 2, 0x6f, "Description: Yeah, rendering is a thing" );
 		}
 
 		void BgfxWindow::Display()
 		{
 			Window::Display();
-			// sfWindow_->display();
+			
+			bgfx::frame();
+			//InternalWindow_->Display();
 		}
 
 		void BgfxWindow::HandleEvents()
 		{
+			InternalWindow_->HandleEvents();
+			// entry::processEvents( Settings_.Width_, Settings_.Height_, BGFX_DEBUG_TEXT, BGFX_RESET_VSYNC );
 			/*sf::Event event;
 			while ( sfWindow_->pollEvent( event ) )
 			{

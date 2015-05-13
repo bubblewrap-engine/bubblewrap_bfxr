@@ -4,6 +4,7 @@
 
 #include "Bubblewrap/Managers/BaseManager.hpp"
 #include "Bubblewrap/Render/Window.hpp"
+#include "bgfx.h"
 #include <functional>
 namespace Bubblewrap
 {
@@ -16,13 +17,13 @@ namespace Bubblewrap
 		public:
 			/*! Creates an BgfxWindow
 			\param Settings The settings that should be used to setup the window */
-			BgfxWindow( Window::WindowSettings Settings );
+			BgfxWindow( Window::WindowSettings Settings, Managers::Managers* Owner );
 
 			void Update( float dt );
 			void Display();
 			void HandleEvents();
 
-			/*! Performs a function on the RenderWindow 
+			/*! Performs a function on the RenderWindow
 			\param Function The function that should be called on Window
 			*/
 			void Do( std::function<void( void* Window )> Function );
@@ -31,11 +32,15 @@ namespace Bubblewrap
 			\param Params a pointer to the parameters that should be used to create the window
 			\returns A pointer to a new window
 			*/
-			static Window* Create(void *Params);
+			static Window* Create( void *Params, Managers::Managers* Owner );
 		private:
-
+			int defaultWindow = 0;
 			// sf::RenderWindow* sfWindow_;
-			int View_;
+			Window* InternalWindow_;
+
+			bgfx::VertexBufferHandle VertexBufferHandle_;
+			bgfx::IndexBufferHandle IndexBufferHandle_;
+			bgfx::ProgramHandle Program_;
 		};
 
 	}

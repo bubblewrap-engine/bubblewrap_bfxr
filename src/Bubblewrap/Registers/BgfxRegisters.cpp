@@ -8,7 +8,7 @@
 #include "Bubblewrap/Render/BgfxText.hpp"
 #include "Bubblewrap/Render/BgfxFont.hpp"
 #include "Bubblewrap/Render/BgfxImage.hpp"
-
+#include "Bubblewrap/Render/BgfxShader.hpp"
 namespace Bubblewrap
 {
 	namespace Registers
@@ -19,7 +19,7 @@ namespace Bubblewrap
 
 			Register->RegisterCreator( "Clock", Base::BgfxClock::Create, Base::BgfxClock::CopyDef, true );
 
-			Register->GetManager()->GetWindowManager().SetCreate( Render::BgfxWindow::Create );
+			// Register->GetManager()->GetWindowManager().SetCreate( Render::BgfxWindow::Create );
 		}
 
 		void BgfxRegisters::RegisterGraphics( void* ObjectRegister )
@@ -32,9 +32,9 @@ namespace Bubblewrap
 			Register->RegisterCreator( "Font", Render::BgfxFont::Create, Render::BgfxFont::CopyDef, true );
 			Register->RegisterCreator( "Text", Render::BgfxText::Create, Render::BgfxText::CopyDef, true );
 
-			Register->RegisterCreator("Image", Render::BgfxImage::Create, Render::BgfxImage::CopyDef, true );
-
-			Register->GetManager()->GetWindowManager().SetCreate(Render::BgfxWindow::Create);
+			Register->RegisterCreator( "Image", Render::BgfxImage::Create, Render::BgfxImage::CopyDef, true );
+			Register->RegisterCreator( "Shader", Render::BgfxShader::Create, Render::BgfxShader::CopyDef, true );
+			Register->GetManager()->GetWindowManager().OverrideCreate( Render::BgfxWindow::Create );
 		}
 
 	}
